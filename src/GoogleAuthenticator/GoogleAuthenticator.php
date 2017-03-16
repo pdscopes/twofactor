@@ -112,6 +112,9 @@ class GoogleAuthenticator
      */
     public function verify($code, $discrepancy = 1, $timeSlice = null)
     {
+        // Force code into a string
+        $code = (string) $code;
+
         // Check code length
         if (strlen($code) != $this->length) {
             return false;

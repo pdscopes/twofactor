@@ -75,9 +75,9 @@ class GoogleAuthenticatorTest extends TestCase
     public function validSecretTimeCodeDataProvider()
     {
         return [
-            ['SECRETKEYSECRETKEY', 49637965, '744102'],
+            ['SECRETKEYSECRETKEY', 49637965, 744102],
             ['SECRETKEYSECRETKEY', 49637966, '716156'],
-            ['ANOTHERSECRETKEYVALUE', 49637973, '936461'],
+            ['ANOTHERSECRETKEYVALUE', 49637973, 936461],
             ['ANOTHERSECRETKEYVALUE', 49637974, '852137'],
         ];
     }
