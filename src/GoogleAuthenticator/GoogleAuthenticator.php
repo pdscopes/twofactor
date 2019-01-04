@@ -3,10 +3,7 @@
 namespace MadeSimple\TwoFactor\GoogleAuthenticator;
 
 /**
- * Class GoogleAuthenticator
- *
- * @package MadeSimple\TwoFactor\GoogleAuthenticator
- * @author  Peter Scopes
+ * @link https://developers.google.com/chart/infographics/docs/qr_codes
  */
 class GoogleAuthenticator
 {
