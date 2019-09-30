@@ -128,4 +128,57 @@ class GoogleAuthenticator
 
         return false;
     }
+
+    /**
+     * Generates a OTP Auth string which should be used as the data to generate a QR code.
+     *
+     * The Account name may not contain a double colon (:). Valid account name examples:
+     *  - "John.Doe@gmail.com"
+     *  - "John Doe"
+     *  - "John_Doe_789"
+     *
+     * The Issuer may not contain a double colon (:). The issuer is recommended to pass along. If used, it will also
+     * be appended before the account name.
+     *
+     * The previous examples of account names with an issue "Foo ltd" would result in the label:
+     *  - "Foo ltd:John.Doe@gmail.com"
+     *  - "Foo ltd:John Doe"
+     *  - "Foo ltd:John_Doe_789"
+     *
+     * The contents of the label, issuer, and secret are used to generate the OTP auth string.
+     *
+     * @param string      $accountName
+     * @param string      $secret
+     * @param string|null $issuer
+     * @return string
+     */
+    public static function otpAuthString($accountName, $secret, $issuer = null)
+    {
+        if ('' === $accountName || false !== strpos($accountName, ':')) {
+            throw new \InvalidArgumentException(sprintf(
+                'The account name may not contain a double colon (:) and may not be an empty string. Given "%s".',
+                $accountName
+            ));
+        }
+        if ('' === $secret) {
+            throw new \InvalidArgumentException('The secret may not be an empty string.');
+        }
+
+        $label = $accountName;
+        $otpAuthString = 'otpauth://totp/%s?secret=%s';
+
+        if (null !== $issuer) {
+            if ('' === $issuer || false !== strpos($issuer, ':')) {
+                throw new \InvalidArgumentException(sprintf(
+                    'The issuer may not contain a double colon (:) and may not be an empty string. Given "%s".',
+                    $issuer
+                ));
+            }
+            // use both the issuer parameter and label prefix as recommended by Google for BC reasons
+            $label = $issuer.':'.$label;
+            $otpAuthString .= '&issuer=%s';
+        }
+
+        return sprintf($otpAuthString, $label, $secret, $issuer);
+    }
 }

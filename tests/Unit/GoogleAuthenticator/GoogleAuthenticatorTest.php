@@ -62,6 +62,37 @@ class GoogleAuthenticatorTest extends TestCase
         $this->assertTrue($auth->verify($code, 0, $time));
     }
 
+    /**
+     * Test GoogleAuthenticator::otpAuthString throws an exception if an invalid argument is provided.
+     *
+     * @dataProvider invalidAccountNameDataProvider
+     * @param $accountName
+     * @param $secret
+     * @param $issuer
+     * @expectedException \InvalidArgumentException
+     */
+    public function testOtpAuthStringInvalidArgumentException($accountName, $secret, $issuer = null)
+    {
+        GoogleAuthenticator::otpAuthString($accountName, $secret, $issuer);
+    }
+
+
+    /**
+     * Test GoogleAuthenticator::otpAuthString generates valid string.
+     *
+     * @dataProvider validAccountNameDataProvider
+     * @param $otpAuthString
+     * @param $accountName
+     * @param $secret
+     * @param $issuer
+     */
+    public function testOtpAuthString($otpAuthString, $accountName, $secret, $issuer = null)
+    {
+        $generated = GoogleAuthenticator::otpAuthString($accountName, $secret, $issuer);
+
+        $this->assertEquals($otpAuthString, $generated);
+    }
+
 
 
     public function invalidLengthDataProvider()
@@ -79,6 +110,23 @@ class GoogleAuthenticatorTest extends TestCase
             ['SECRETKEYSECRETKEY', 49637966, '716156'],
             ['ANOTHERSECRETKEYVALUE', 49637973, 936461],
             ['ANOTHERSECRETKEYVALUE', 49637974, '852137'],
+        ];
+    }
+    public function invalidAccountNameDataProvider()
+    {
+        return [
+            ['invalid:accountName', 'secret'],
+            ['', 'secret'],
+            ['example', ''],
+            ['example', 'secret', 'invalid:issuer'],
+            ['example', 'secret', ''],
+        ];
+    }
+    public function validAccountNameDataProvider()
+    {
+        return [
+            ['otpauth://totp/accountName?secret=SECRET', 'accountName', 'SECRET'],
+            ['otpauth://totp/ISSUER:accountName?secret=SECRET&issuer=ISSUER', 'accountName', 'SECRET', 'ISSUER'],
         ];
     }
 }
