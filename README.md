@@ -1,4 +1,6 @@
 # madesimple/twofactor
+[![PHPUnit](https://github.com/pdscopes/twofactor/actions/workflows/phpunit.yml/badge.svg)](https://github.com/pdscopes/twofactor/actions/workflows/phpunit.yml)
+
 Library for two factor authentication.
 
 ## Google Authenticator
