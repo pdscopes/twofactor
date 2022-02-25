@@ -17,12 +17,10 @@ class Base32Test extends TestCase
         $this->assertEquals($original, Base32::decode(Base32::encode($original)));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Encoded string is invalid. Contains unknown char #
-     */
     public function testDecodeThrowsInvalidArgumentException()
     {
+        $this->expectExceptionMessage("Encoded string is invalid. Contains unknown char #");
+        $this->expectException(\InvalidArgumentException::class);
         Base32::decode('InvalidEncoded0987');
     }
 }

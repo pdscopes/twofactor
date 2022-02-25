@@ -12,12 +12,11 @@ class GoogleAuthenticatorTest extends TestCase
      *
      * @dataProvider invalidLengthDataProvider
      * @param int $length
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Secret length must be 16 <= length <= 128
      */
     public function testSecretThrowsInvalidArgumentException($length)
     {
+        $this->expectExceptionMessage("Secret length must be 16 <= length <= 128");
+        $this->expectException(\InvalidArgumentException::class);
         GoogleAuthenticator::secret($length);
     }
 
@@ -69,10 +68,10 @@ class GoogleAuthenticatorTest extends TestCase
      * @param $accountName
      * @param $secret
      * @param $issuer
-     * @expectedException \InvalidArgumentException
      */
     public function testOtpAuthStringInvalidArgumentException($accountName, $secret, $issuer = null)
     {
+        $this->expectException(\InvalidArgumentException::class);
         GoogleAuthenticator::otpAuthString($accountName, $secret, $issuer);
     }
 
